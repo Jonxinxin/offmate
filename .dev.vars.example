@@ -1,0 +1,10 @@
+# 本地开发用的变量。复制为 .dev.vars（已 gitignore）后使用。
+# .dev.vars 会覆盖 wrangler.toml 中 [vars] 的同名项，仅在本地生效。
+
+# JWT 签名密钥。生产环境用 `npx wrangler secret put JWT_SECRET` 设置，
+# 不要写进 wrangler.toml。生成方式：openssl rand -base64 32
+JWT_SECRET = "dev-only-secret-change-me"
+
+# 后端据此拼接邀请链接。本地必须指向 Vite 的地址，
+# 否则群组页复制出来的链接会指向尚未部署的生产域名，本地点开是打不开的。
+WEB_ORIGIN = "http://localhost:5173"

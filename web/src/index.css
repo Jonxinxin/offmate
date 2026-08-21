@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+/* 状态色是产品的核心视觉语言，集中定义便于后续做深色模式 */
+@theme {
+  --color-status-day: #f59e0b;
+  --color-status-mid: #3b82f6;
+  --color-status-night: #6366f1;
+  --color-status-off: #22c55e;
+  /* busy_only 脱敏后的"在上班但不透露班次"，用中性色与具体班次区分开 */
+  --color-status-work: #64748b;
+  --color-status-unset: #9ca3af;
+
+  --color-ink: #1f2328;
+  --color-ink-soft: #6b7280;
+  --color-canvas: #f5f6f8;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/*
+ * 底部导航的实际高度，由 TabBar 组件用 ResizeObserver 实测后写入。
+ * 页面里的悬浮按钮据此避让——不能写死数值：微信内置浏览器允许用户放大字体，
+ * 导航栏会被文字撑高，固定数值下悬浮按钮就会压在导航栏上。
+ * 这里的默认值只在 JS 尚未测量时短暂生效。
+ */
+:root {
+  --tab-h: 3.5rem;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* 防止 iOS 横屏或微信内自动放大正文，那会打乱所有基于字号的布局 */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* 防止 iOS 橡皮筋滚动露出白底 */
+  overscroll-behavior-y: none;
+}

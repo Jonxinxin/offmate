@@ -1,0 +1,46 @@
+{
+  "name": "offmate",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/predev.mjs",
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "wrangler dev --port 8787",
+    "dev:web": "vite",
+    "build": "vite build",
+    "postbuild": "node scripts/check-styles.mjs",
+    "deploy": "npm run build && wrangler deploy",
+    "setup:cloudflare": "node scripts/setup-cloudflare.mjs",
+    "verify:deploy": "node scripts/verify-deploy.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p web/tsconfig.json",
+    "smoke": "wrangler d1 execute offmate-db --local --command \"DELETE FROM rate_limits\" && node scripts/smoke-auth.mjs && node scripts/smoke-groups.mjs && node scripts/smoke-schedules.mjs && node scripts/smoke-rules.mjs",
+    "seed": "node scripts/seed-demo.mjs",
+    "db:init:local": "wrangler d1 migrations apply offmate-db --local",
+    "db:reset:local": "wrangler d1 execute offmate-db --local --command \"DELETE FROM schedules; DELETE FROM shift_rules; DELETE FROM memberships; DELETE FROM groups; DELETE FROM users; DELETE FROM rate_limits\"",
+    "db:init:remote": "wrangler d1 migrations apply offmate-db --remote"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.9.0",
+    "@tanstack/react-query": "^5.62.0",
+    "hono": "^4.6.0",
+    "qrcode": "^1.5.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260820.1",
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "concurrently": "^9.1.0",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0",
+    "vite": "^6.0.0",
+    "wrangler": "^4.124.0"
+  }
+}

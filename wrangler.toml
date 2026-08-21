@@ -1,0 +1,33 @@
+name = "offmate"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+# 静态资源：前端构建产物。SPA fallback 让 /join/XXXX 这类前端路由刷新时不 404。
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
+[vars]
+# 前端站点地址，后端拼接邀请链接时使用
+WEB_ORIGIN = "https://om.988869.xyz"
+# API 域名，用于把非 /api 请求在该域名下直接 404（不返回前端页面）
+API_HOST = "omapi.988869.xyz"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "offmate-db"
+# 运行 `npx wrangler d1 create offmate-db` 后把返回的 id 填到这里。
+# 本地开发（wrangler dev）使用本地 SQLite 模拟，不依赖这个值。
+database_id = "d1b4346b-6c81-4527-8784-d3af27017848"
+migrations_dir = "migrations"
+
+# 前端域名 → 静态资源
+[[routes]]
+pattern = "om.988869.xyz/*"
+zone_name = "988869.xyz"
+
+# 后端域名 → Hono
+[[routes]]
+pattern = "omapi.988869.xyz/*"
+zone_name = "988869.xyz"
